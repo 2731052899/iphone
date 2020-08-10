@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, initial-scale=1,maximum-scale = 10,minimum-scale=1">
+    <title>移动端布局案例</title>
+    <style>
+        html{
+            font-size: 26.66666666vw ;
+        }
+        body,ul,li,a{
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            
+        }
+        .title{
+            width: 3.3rem;
+            height: 0.3rem;
+            margin: 0.3rem auto ;
+            position: relative;
+            
+        }
+        .close{
+            width: 0.28rem;
+            height: 0.3rem;
+            position: absolute;
+            left: 0;
+        }
+        .more{
+            width: 0.36rem;
+            height: 0.08rem;
+            position: absolute;
+            right: 0;
+            top: 0;bottom: 0;
+            margin: auto ;
+        }
+        .titl{
+            position: absolute;
+            width:0.92rem;
+            height:0.3rem;
+            top: 0;bottom: 0;left: 0;right: 0;margin: auto;
+        }
+        .banner img{
+           margin-top: 0.3rem;
+            width: 3.75rem;
+        }
+        .list{
+            width: 3.3rem;
+            margin: 0.3rem auto;
+        }
+        .list li{
+            float: left;
+            font-size: 0.024rem;
+            margin: 0.23rem;
+            color: #ccc;
+        }
+        
+        .list li:nth-child(1){
+            margin-left: 0rem;
+        }
+        .list li:nth-child(4){
+            margin-right: 0rem;
+        }
+        .top1{
+            width: 3.75rem;
+            height: 0.50rem;
+            position: relative;
+            margin: 0.3rem auto;
+        }
+        .top1 img{
+            position: absolute;
+            top: 0;bottom: 0;left: 0;right: 0;margin: auto;
+        }
+        .show1{
+            width: 3.3rem;
+            margin: 0.3rem auto;
+        }
+        .show1 .shop{
+            width: 1.5rem;
+            height: auto;
+            float: left;
+             margin: 0.05rem;
+        }
+        .show1 .shop .img1,.img2{
+            width: 100%;
+
+        }
+        .shop .buy{
+            width: 0.65rem;
+            height: 0.2rem;
+            margin-left: 0.7rem;
+        }
+    </style>
+    <script src="../jquery/jquery1.7.js"></script>
+    <script src="../jquery/hammer.js"></script>
+    <script src="../jquery/jquery-1.10.1.min.js"></script>
+    <script>
+        (function (factory) {
+            if (typeof define === 'function' && define.amd) {
+                define(['jquery', 'hammerjs'], factory);
+            } else if (typeof exports === 'object') {
+                factory(require('jquery'), require('hammerjs'));
+            } else {
+                factory(jQuery, Hammer);
+            }
+        }(function ($, Hammer) {
+            function hammerify(el, options) {
+                var $el = $(el);
+                if (!$el.data("hammer")) {
+                    $el.data("hammer", new Hammer($el[0], options));
+                }
+            }
+
+            $.fn.hammer = function (options) {
+                return this.each(function () {
+                    hammerify(this, options);
+                });
+            };
+
+            // extend the emit method to also trigger jQuery events
+            Hammer.Manager.prototype.emit = (function (originalEmit) {
+                return function (type, data) {
+                    originalEmit.call(this, type, data);
+                    $(this.element).trigger({
+                        type: type,
+                        gesture: data
+                    });
+                };
+            })(Hammer.Manager.prototype.emit);
+        }));
+    </script>
+</head>
+<body>
+    <!-- 看的好  看的清     分辨率750 iphone6  375逻辑像素     rem针对于根元素的倍数  js和vw原理
+        布局方面的处理方式    移动端小，布局结构相对简单   pc端的屏幕够大，给设计师更多的设计空间。
+        移动端从左至右弹性盒子排列
+    -->
+    <div class="title">
+        <img src="./img/images/3_03.jpg" alt="" class="close">  
+        <img src="./img/1.png" alt="" class="titl">
+        <img src="./img/2.png" alt="" class="more">
+    
+    </div>
+    <div class="list">
+        <ul>
+            <li>产品分类</li>
+            <li>案例展示</li>
+            <li>设计团队</li>
+            <li>品牌故事</li>
+        </ul>
+    </div>
+    <div class="banner">
+        <img src="./img/images/3_06.jpg" alt="" >
+    </div>
+    <div class="top1">
+        <img src="./img/images/3_09.jpg" alt="" >
+    </div>
+    <div class="show1">
+        <div class="shop">
+        <img src="./img/images/3_13.jpg" alt="" class="img1">
+        </div>
+        <div class="shop">
+        <img src="./img/images/3_15.jpg" alt="" class="img2">
+        </div>
+    </div>
+    <!-- <script>
+        function rem(designSize){
+            var clientW = document.documentElement.clientWidth;
+            var bili = clientW/designSize;
+            document.querySelector("html").style.fontSize=bili*200 +"px";           
+            
+        }
+        document.addEventListener("DOMContentLoaded",function(){
+            rem(750)
+        })
+        window.addEventListener("resize",function(){
+            rem(750)
+        })
+    </script> -->
+   <script>
+       $(".banner").hammer().bind("tap",function(e){
+            console.log(e);
+       })
+   </script>
+</body>
+</html>
